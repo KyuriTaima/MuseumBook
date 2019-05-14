@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MuseumBook</string>
+    <string name="scan">Scan</string>
+    <string name="my_museums">My Museums</string>
+</resources>
