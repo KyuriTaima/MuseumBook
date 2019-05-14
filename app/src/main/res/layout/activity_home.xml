@@ -5,21 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:context=".HomeActivity"
-    android:weightSum="2">
+    android:weightSum="100">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_weight="10"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        style="@style/HeaderBar"
+        android:elevation="4dp">
+    </android.support.v7.widget.Toolbar>
 
     <Button
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_weight="45"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_margin="40dp"
         android:text="@string/scan"
     />
     <Button
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_weight="45"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_margin="40dp"
         android:text="@string/my_museums"
         />
