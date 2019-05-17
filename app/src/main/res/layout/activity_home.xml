@@ -15,22 +15,27 @@
         android:layout_height="0dp"
         android:layout_width="match_parent"
         style="@style/HeaderBar"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:background="@color/colorPrimaryDark">
     </android.support.v7.widget.Toolbar>
 
     <Button
+        android:id="@+id/scan_button"
         android:layout_weight="45"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="40dp"
         android:text="@string/scan"
-    />
+        style="@style/home_buttons"
+        />
     <Button
+        android:id="@+id/museums_button"
         android:layout_weight="45"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="40dp"
         android:text="@string/my_museums"
+        style="@style/home_buttons"
         />
 
 </LinearLayout>

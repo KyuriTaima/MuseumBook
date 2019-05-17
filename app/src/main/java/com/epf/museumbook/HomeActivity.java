@@ -15,6 +15,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar mTopToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(mTopToolbar);
+        getSupportActionBar().setTitle("Home");
     }
 
     @Override
@@ -32,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_favorite) {
+        if (id == R.id.camera_nav_icon) {
             Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             return true;
         }

@@ -5,10 +5,16 @@
     tools:context=".HomeActivity">
 
     <item
-        android:id="@+id/action_favorite"
+        android:id="@+id/museum_nav_icon"
         android:orderInCategory="300"
-        android:title="User"
-        android:icon="@mipmap/ic_museum"
+        android:title="@string/user"
+        android:icon="@drawable/ic_museum"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/camera_nav_icon"
+        android:orderInCategory="300"
+        android:title="@string/user"
+        android:icon="@drawable/ic_camera"
         app:showAsAction="ifRoom" />
 
 </menu>
