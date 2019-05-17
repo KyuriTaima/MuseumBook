@@ -6,4 +6,5 @@
     <color name="white">#ffff</color>
     <color name="black">#000</color>
     <color name="projectRed">#c70000</color>
+    <color name="projectLightGrey">#d1d1d1</color>
 </resources>

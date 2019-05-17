@@ -2,27 +2,45 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:weightSum="100">
+    android:weightSum="100"
+    android:elevation="5dp"
+    android:background="@color/projectLightGrey"
+    android:id="@+id/layout_recycler_view">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/icon_recycler_view"
         android:layout_width="0dp"
-        android:layout_weight="20"
-        android:layout_height="wrap_content"
+        android:layout_height="153dp"
         android:layout_margin="10dp"
-        android:src="@drawable/ic_musee_rodin"/>
+        android:layout_weight="30"
+        android:src="@drawable/ic_musee_rodin" />
     <LinearLayout
-        android:layout_weight="80"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:layout_weight="60"
+        android:padding="5dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/title_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/mus_e_rodin"/>
+            android:text="@string/mus_e_rodin"
+            style="@style/RecycleViewItemTitle"/>
+        <TextView
+            android:id="@+id/address_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/_14_quai_de_la_r_p_e"
+            style="@style/RecycleViewItemAddress"/>
+        <TextView
+            android:id="@+id/description_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Art contemporain"
+            style="@style/RecycleViewItemDescription"/>
 
     </LinearLayout>
 
