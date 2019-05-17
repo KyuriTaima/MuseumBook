@@ -1,13 +1,18 @@
 package com.epf.museumbook;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
 
 public class HomeActivity extends AppCompatActivity {
+    private Context context = this;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +21,26 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar mTopToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(mTopToolbar);
         getSupportActionBar().setTitle("Home");
+
+
+        Button scanBtn = (Button) findViewById(R.id.scan_button);
+        Button museumBtn = (Button) findViewById(R.id.museums_button);
+
+        scanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ScanActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        museumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MuseumListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -34,8 +59,12 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.camera_nav_icon) {
-            Toast.makeText(HomeActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
-            return true;
+            Intent intent = new Intent(this, ScanActivity.class);
+            startActivity(intent);
+        }
+        if( id == R.id.museum_nav_icon){
+            Intent intent = new Intent(this, MuseumListActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
