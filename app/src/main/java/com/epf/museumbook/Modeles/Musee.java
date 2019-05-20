@@ -1,87 +1,166 @@
 package com.epf.museumbook.Modeles;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Musee {
-    private String address;
-    private String pc;
-    private String department;
-    private Boolean closed;
-    private String annual_closing;
+
+    @SerializedName("adresse")
+    @Expose
+    private String adresse;
+    @SerializedName("cp")
+    @Expose
+    private String cp;
+    @SerializedName("dept")
+    @Expose
+    private String dept;
+    @SerializedName("ferme")
+    @Expose
+    private boolean ferme;
+    @SerializedName("fermeture_annuelle")
+    @Expose
+    private String fermetureAnnuelle;
+    @SerializedName("id")
+    @Expose
+    private String id;
+    @SerializedName("nom")
+    @Expose
+    private String nom;
+    @SerializedName("periode_ouverture")
+    @Expose
+    private String periodeOuverture;
+    @SerializedName("region")
+    @Expose
     private String region;
-    private String website;
-    private String city;
+    @SerializedName("site_web")
+    @Expose
+    private String siteWeb;
+    @SerializedName("ville")
+    @Expose
+    private String ville;
 
-    public Musee(String address, String pc, String department, Boolean closed, String annual_closing, String region, String website, String city) {
-        this.address = address;
-        this.pc = pc;
-        this.department = department;
-        this.closed = closed;
-        this.annual_closing = annual_closing;
+    /**
+     * No args constructor for use in serialization
+     *
+     */
+    public Musee() {
+    }
+
+    /**
+     *
+     * @param region
+     * @param id
+     * @param ferme
+     * @param cp
+     * @param adresse
+     * @param ville
+     * @param periodeOuverture
+     * @param siteWeb
+     * @param dept
+     * @param fermetureAnnuelle
+     * @param nom
+     */
+    public Musee(String adresse, String cp, String dept, boolean ferme, String fermetureAnnuelle, String id, String nom, String periodeOuverture, String region, String siteWeb, String ville) {
+        super();
+        this.adresse = adresse;
+        this.cp = cp;
+        this.dept = dept;
+        this.ferme = ferme;
+        this.fermetureAnnuelle = fermetureAnnuelle;
+        this.id = id;
+        this.nom = nom;
+        this.periodeOuverture = periodeOuverture;
         this.region = region;
-        this.website = website;
-        this.city = city;
+        this.siteWeb = siteWeb;
+        this.ville = ville;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public String getAdresse() {
+        return adresse;
     }
 
-    public void setPc(String pc) {
-        this.pc = pc;
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public String getCp() {
+        return cp;
     }
 
-    public void setClosed(Boolean closed) {
-        this.closed = closed;
+    public void setCp(String cp) {
+        this.cp = cp;
     }
 
-    public void setAnnual_closing(String annual_closing) {
-        this.annual_closing = annual_closing;
+    public String getDept() {
+        return dept;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
+    public void setDept(String dept) {
+        this.dept = dept;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public boolean isFerme() {
+        return ferme;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setFerme(boolean ferme) {
+        this.ferme = ferme;
     }
 
-    public String getAddress() {
-        return address;
+    public String getFermetureAnnuelle() {
+        return fermetureAnnuelle;
     }
 
-    public String getPc() {
-        return pc;
+    public void setFermetureAnnuelle(String fermetureAnnuelle) {
+        this.fermetureAnnuelle = fermetureAnnuelle;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getId() {
+        return id;
     }
 
-    public Boolean getClosed() {
-        return closed;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getAnnual_closing() {
-        return annual_closing;
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPeriodeOuverture() {
+        return periodeOuverture;
+    }
+
+    public void setPeriodeOuverture(String periodeOuverture) {
+        this.periodeOuverture = periodeOuverture;
     }
 
     public String getRegion() {
         return region;
     }
 
-    public String getWebsite() {
-        return website;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
-    public String getCity() {
-        return city;
+    public String getSiteWeb() {
+        return siteWeb;
     }
+
+    public void setSiteWeb(String siteWeb) {
+        this.siteWeb = siteWeb;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
 }
