@@ -22,14 +22,11 @@ public class MuseumListActivity extends AppCompatActivity {
     private ArrayList<String> descriptions = new ArrayList<String>();
     private ArrayList<String> addresses = new ArrayList<String>();
     private ArrayList<Integer> ressources = new ArrayList<Integer>();
-    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_museum_list);
-
-        recyclerView = findViewById(R.id.museums_recycler_view);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://vps449928.ovh.net/api/")
@@ -45,13 +42,15 @@ public class MuseumListActivity extends AppCompatActivity {
                     return;
                 }
                 else{
-                    System.out.println("API ERROR onResponse" + response.code());
+                    System.out.println("API SUCCESSFUL onResponse" + response.code());
                 }
                 Musee musee = response.body();
                     titles.add((musee.getNom()));
                     addresses.add(musee.getAdresse());
                     descriptions.add(musee.getSiteWeb());
                     ressources.add(R.drawable.ic_musee_du_quai_branly);
+                initRecyclerView();
+
             }
 
             @Override
@@ -60,13 +59,14 @@ public class MuseumListActivity extends AppCompatActivity {
             }
         });
 
-        initRecyclerView();
-
-
-
     }
 
     private void initRecyclerView() {
+        System.out.println(titles.get(0));
+        System.out.println(descriptions.get(0));
+        System.out.println(addresses.get(0));
+
+        RecyclerView recyclerView = findViewById(R.id.museums_recycler_view);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(titles, descriptions, addresses, this, ressources);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
