@@ -1,8 +1,10 @@
 package com.epf.museumbook;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.epf.museumbook.Modeles.DatabaseHelper;
 import com.epf.museumbook.Modeles.Musee;
 
 import retrofit2.Call;
@@ -12,6 +14,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ScanActivity extends AppCompatActivity {
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class ScanActivity extends AppCompatActivity {
                     System.out.println("API SUCCESSFUL onResponse" + response.code());
                 }
                 Musee musee = response.body();
+                DatabaseHelper db = new DatabaseHelper(context);
+                db.insertMusee(musee);
 
             }
 
