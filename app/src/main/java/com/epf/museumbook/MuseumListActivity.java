@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import com.epf.museumbook.Modeles.Musee;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,45 +26,11 @@ public class MuseumListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_museum_list);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://vps449928.ovh.net/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MuseeAPI museeAPI = retrofit.create(MuseeAPI.class);
-        Call<Musee> call = museeAPI.getMusees("5c637e3c61e55c808b31e1ae12a57fc5c4842b4b");
-        call.enqueue(new Callback<Musee>() {
-            @Override
-            public void onResponse(Call<Musee> call, Response<Musee> response) {
-                if (!response.isSuccessful()){
-                    System.out.println("Error, reponse :" + response.code());
-                    return;
-                }
-                else{
-                    System.out.println("API SUCCESSFUL onResponse" + response.code());
-                }
-                Musee musee = response.body();
-                    titles.add((musee.getNom()));
-                    addresses.add(musee.getAdresse());
-                    descriptions.add(musee.getSiteWeb());
-                    ressources.add(R.drawable.ic_musee_du_quai_branly);
-                initRecyclerView();
-
-            }
-
-            @Override
-            public void onFailure(Call<Musee> call, Throwable t) {
-                System.out.println("API Error onFailure" + t);
-            }
-        });
-
     }
 
-    private void initRecyclerView() {
-        System.out.println(titles.get(0));
-        System.out.println(descriptions.get(0));
-        System.out.println(addresses.get(0));
 
+
+    private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.museums_recycler_view);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(titles, descriptions, addresses, this, ressources);
         recyclerView.setAdapter(adapter);
