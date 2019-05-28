@@ -11,13 +11,13 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
 
     //Set all the database column names and table names into constants
     val MUSEUM_TABLE = "MUSEUM_TABLE"
-    private val MUSEUM_COL1 = "id"
+    private val MUSEUM_COL1 = "rank"
     private val MUSEUM_COL2 = "Adresse"
     private val MUSEUM_COL3 = "CP"
     private val MUSEUM_COL4 = "Dept"
     private val MUSEUM_COL5 = "Ferme"
     private val MUSEUM_COL6 = "FermetureAnnuelle"
-    private val MUSEUM_COL7 = "ID_ext"
+    private val MUSEUM_COL7 = "id"
     private val MUSEUM_COL8 = "Nom"
     private val MUSEUM_COL9 = "PeriodeOuverture"
     private val MUSEUM_COL10 = "Region"
@@ -49,7 +49,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
     fun getMusees(): ArrayList<Musee> {
         val musees: ArrayList<Musee> = ArrayList()
         val db = this.readableDatabase
-        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `id` DESC, null", null)
+        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `rank` DESC, null", null)
         c.moveToFirst()
         var i = 0
         while (i < c.count) {
@@ -66,10 +66,10 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         return musees
     }
 
-    fun getMusee(ID: String): Musee {
+    fun getMusee(id: String): Musee {
         val db = this.readableDatabase
         //Get the job corresponding to the job_id passed as a parameter
-        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE WHERE `ID_ext` IS 'ID_ext'", null)
+        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE WHERE `id` IS $id", null)
         c.moveToFirst()
         var ferme = true
         if (c.getInt(4) == 0) {
@@ -88,13 +88,13 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         }
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(MUSEUM_COL1, musee.id)
+        contentValues.put(MUSEUM_COL1, musee.rank)
         contentValues.put(MUSEUM_COL2, musee.adresse)
         contentValues.put(MUSEUM_COL3, musee.cp)
         contentValues.put(MUSEUM_COL4, musee.dept)
         contentValues.put(MUSEUM_COL5, ferme)
         contentValues.put(MUSEUM_COL6, musee.fermetureAnnuelle)
-        contentValues.put(MUSEUM_COL7, musee.iD_ext)
+        contentValues.put(MUSEUM_COL7, musee.id)
         contentValues.put(MUSEUM_COL8, musee.nom)
         contentValues.put(MUSEUM_COL9, musee.periodeOuverture)
         contentValues.put(MUSEUM_COL10, musee.region)
@@ -112,7 +112,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         }
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(MUSEUM_COL1, musee.id)
+        contentValues.put(MUSEUM_COL1, musee.rank)
         contentValues.put(MUSEUM_COL2, musee.adresse)
         contentValues.put(MUSEUM_COL3, musee.cp)
         contentValues.put(MUSEUM_COL4, musee.dept)
@@ -125,20 +125,24 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         contentValues.put(MUSEUM_COL11, musee.siteWeb)
         contentValues.put(MUSEUM_COL12, musee.ville)
 
-        val args = arrayOf(musee.iD_ext)
-        db.update(MUSEUM_TABLE, contentValues, "`ID_ext` = ?", args)
+        val args = arrayOf(musee.id)
+        db.update(MUSEUM_TABLE, contentValues, "`id` = ?", args)
     }
 
     fun deleteMusee(musee: Musee) {
         val db = this.writableDatabase
-        val args = arrayOf(musee.iD_ext)
-        db.delete(MUSEUM_TABLE, "`ID_ext` = ?", args)
+        val args = arrayOf(musee.id)
+        db.delete(MUSEUM_TABLE, "`id` = ?", args)
     }
 
-    fun getLastMuseumId():Int {
+    fun getLastMuseumRank():Int {
         val db = this.readableDatabase
-        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `id` DESC, null", null)
+        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `rank` DESC, null", null)
         c.moveToFirst()
-        return c.getInt(0)
+        return try {
+            c.getInt(0)
+        }catch (e:Exception){
+            1
+        }
     }
 }

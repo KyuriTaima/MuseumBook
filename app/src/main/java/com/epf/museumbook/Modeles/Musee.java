@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Musee {
 
-    private int id;
+    private int rank;
 
     @SerializedName("adresse")
     @Expose
@@ -24,7 +24,7 @@ public class Musee {
     private String fermetureAnnuelle;
     @SerializedName("id")
     @Expose
-    private String ID_ext;
+    private String id;
     @SerializedName("nom")
     @Expose
     private String nom;
@@ -62,15 +62,15 @@ public class Musee {
      * @param fermetureAnnuelle
      * @param nom
      */
-    public Musee(int id, String adresse, String cp, String dept, boolean ferme, String fermetureAnnuelle, String ID_ext, String nom, String periodeOuverture, String region, String siteWeb, String ville) {
+    public Musee(int rank, String adresse, String cp, String dept, boolean ferme, String fermetureAnnuelle, String id, String nom, String periodeOuverture, String region, String siteWeb, String ville) {
         super();
-        this.id = id;
+        this.rank = rank;
         this.adresse = adresse;
         this.cp = cp;
         this.dept = dept;
         this.ferme = ferme;
         this.fermetureAnnuelle = fermetureAnnuelle;
-        this.ID_ext = ID_ext;
+        this.id = id;
         this.nom = nom;
         this.periodeOuverture = periodeOuverture;
         this.region = region;
@@ -118,20 +118,20 @@ public class Musee {
         this.fermetureAnnuelle = fermetureAnnuelle;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getID_ext() {
-        return ID_ext;
+    public int getRank() {
+        return rank;
     }
 
-    public void setID_ext(String ID_ext) {
-        this.ID_ext = ID_ext;
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public String getNom() {
