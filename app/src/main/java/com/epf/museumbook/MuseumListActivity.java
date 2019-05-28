@@ -1,12 +1,11 @@
 package com.epf.museumbook;
 
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.epf.museumbook.Modeles.DatabaseHelper;
+import com.epf.museumbook.Modeles.DatabaseSQLiteHelper;
 import com.epf.museumbook.Modeles.Musee;
 
 import java.util.ArrayList;
@@ -23,9 +22,10 @@ public class MuseumListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_museum_list);
 
-        DatabaseHelper db = new DatabaseHelper(this);
+        DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
         ArrayList<Musee> musees = new ArrayList<>();
         musees = db.getMusees();
+        System.out.println(musees.get(0).getAdresse());
 
         for(int i=0;i<musees.size();i++){
             titles.add(musees.get(i).getNom());
@@ -33,6 +33,7 @@ public class MuseumListActivity extends AppCompatActivity {
             addresses.add(musees.get(i).getAdresse());
             ressources.add(R.drawable.ic_musee_du_quai_branly);
         }
+        initRecyclerView();
     }
 
 

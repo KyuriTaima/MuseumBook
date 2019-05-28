@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.epf.museumbook.Modeles.DatabaseSQLiteHelper;
+import com.epf.museumbook.Modeles.Musee;
+
 public class HomeActivity extends AppCompatActivity {
     private Context context = this;
 
@@ -41,6 +44,10 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
+        Musee musee = new Musee(db.getLastMuseumId() + 1,"Puteaux","92330","Hauts-de-Seines", true, "Janvier", "1235484egdg54", "Louvre", "8h-12h", "Alsace", "www.louvre.com", "Angers");
+        db.insertMusee(musee);
     }
 
     @Override

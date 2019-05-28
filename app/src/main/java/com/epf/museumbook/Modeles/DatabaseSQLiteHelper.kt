@@ -1,0 +1,144 @@
+package com.epf.museumbook.Modeles
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import java.util.ArrayList
+
+class DatabaseSQLiteHelper : SQLiteOpenHelper {
+
+    //Set all the database column names and table names into constants
+    val MUSEUM_TABLE = "MUSEUM_TABLE"
+    private val MUSEUM_COL1 = "id"
+    private val MUSEUM_COL2 = "Adresse"
+    private val MUSEUM_COL3 = "CP"
+    private val MUSEUM_COL4 = "Dept"
+    private val MUSEUM_COL5 = "Ferme"
+    private val MUSEUM_COL6 = "FermetureAnnuelle"
+    private val MUSEUM_COL7 = "ID_ext"
+    private val MUSEUM_COL8 = "Nom"
+    private val MUSEUM_COL9 = "PeriodeOuverture"
+    private val MUSEUM_COL10 = "Region"
+    private val MUSEUM_COL11 = "SiteWeb"
+    private val MUSEUM_COL12 = "Ville"
+
+
+    //This constructor is very useful, if you change anything in the database architecture, column name, table name, add a new table
+    // Or just want to empty all the data but keep the architecture, just increment the version number by one
+    // It is the last parameter passed in as an Integer in the constructor
+    constructor(context: Context) : super(context, "general_db", null, 4) {
+        val db: SQLiteDatabase = this.writableDatabase
+    }
+
+
+    //Set all tables and all column names, if you want to change the name of a table or a column, change the constant value
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL("CREATE TABLE $MUSEUM_TABLE ( $MUSEUM_COL1 INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,  $MUSEUM_COL2 TEXT, $MUSEUM_COL3 TEXT, $MUSEUM_COL4 TEXT, $MUSEUM_COL5 INTEGER, $MUSEUM_COL6 TEXT, $MUSEUM_COL7 TEXT, $MUSEUM_COL8 TEXT, $MUSEUM_COL9 TEXT, $MUSEUM_COL10 TEXT, $MUSEUM_COL11 TEXT, $MUSEUM_COL12 )")
+  }
+
+    //onUpgrade method will be called when you increment the version number of the constructor
+    //Drops all tables on upgrade to reset them
+    //Calls onCreate at the end to reinitialize the database
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        db!!.execSQL("DROP TABLE IF EXISTS $MUSEUM_TABLE")
+        onCreate(db)
+    }
+
+    fun getMusees(): ArrayList<Musee> {
+        val musees: ArrayList<Musee> = ArrayList()
+        val db = this.readableDatabase
+        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `id` DESC, null", null)
+        c.moveToFirst()
+        var i = 0
+        while (i < c.count) {
+            var ferme = true
+            if (c.getInt(4) == 0) {
+                ferme = false
+            }
+            musees.add(Musee(c.getInt(0),c.getString(1), c.getString(2), c.getString(3), ferme, c.getString(5),
+                    c.getString(6), c.getString(7), c.getString(8), c.getString(9), c.getString(10),
+                    c.getString(11)))
+            c.moveToNext()
+            i++
+        }
+        return musees
+    }
+
+    fun getMusee(ID: String): Musee {
+        val db = this.readableDatabase
+        //Get the job corresponding to the job_id passed as a parameter
+        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE WHERE `ID_ext` IS 'ID_ext'", null)
+        c.moveToFirst()
+        var ferme = true
+        if (c.getInt(4) == 0) {
+            ferme = false
+        }
+        return Musee(c.getInt(0),c.getString(1), c.getString(2), c.getString(3), ferme, c.getString(5),
+                c.getString(6), c.getString(7), c.getString(8), c.getString(9), c.getString(10),
+                c.getString(11))
+
+    }
+
+    fun insertMusee(musee: Musee) {
+        var ferme = 1
+        if (musee.isFerme) {
+            ferme = 0
+        }
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(MUSEUM_COL1, musee.id)
+        contentValues.put(MUSEUM_COL2, musee.adresse)
+        contentValues.put(MUSEUM_COL3, musee.cp)
+        contentValues.put(MUSEUM_COL4, musee.dept)
+        contentValues.put(MUSEUM_COL5, ferme)
+        contentValues.put(MUSEUM_COL6, musee.fermetureAnnuelle)
+        contentValues.put(MUSEUM_COL7, musee.iD_ext)
+        contentValues.put(MUSEUM_COL8, musee.nom)
+        contentValues.put(MUSEUM_COL9, musee.periodeOuverture)
+        contentValues.put(MUSEUM_COL10, musee.region)
+        contentValues.put(MUSEUM_COL11, musee.siteWeb)
+        contentValues.put(MUSEUM_COL12, musee.ville)
+
+        db.insert(MUSEUM_TABLE, null, contentValues)
+    }
+
+    fun updateMusee(musee: Musee) {
+
+        var ferme = 1
+        if (musee.isFerme) {
+            ferme = 0
+        }
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put(MUSEUM_COL1, musee.id)
+        contentValues.put(MUSEUM_COL2, musee.adresse)
+        contentValues.put(MUSEUM_COL3, musee.cp)
+        contentValues.put(MUSEUM_COL4, musee.dept)
+        contentValues.put(MUSEUM_COL5, ferme)
+        contentValues.put(MUSEUM_COL6, musee.fermetureAnnuelle)
+        contentValues.put(MUSEUM_COL7, musee.id)
+        contentValues.put(MUSEUM_COL8, musee.nom)
+        contentValues.put(MUSEUM_COL9, musee.periodeOuverture)
+        contentValues.put(MUSEUM_COL10, musee.region)
+        contentValues.put(MUSEUM_COL11, musee.siteWeb)
+        contentValues.put(MUSEUM_COL12, musee.ville)
+
+        val args = arrayOf(musee.iD_ext)
+        db.update(MUSEUM_TABLE, contentValues, "`ID_ext` = ?", args)
+    }
+
+    fun deleteMusee(musee: Musee) {
+        val db = this.writableDatabase
+        val args = arrayOf(musee.iD_ext)
+        db.delete(MUSEUM_TABLE, "`ID_ext` = ?", args)
+    }
+
+    fun getLastMuseumId():Int {
+        val db = this.readableDatabase
+        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `id` DESC, null", null)
+        c.moveToFirst()
+        return c.getInt(0)
+    }
+}
