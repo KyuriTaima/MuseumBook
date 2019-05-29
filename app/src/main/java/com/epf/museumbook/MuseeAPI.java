@@ -11,5 +11,5 @@ import retrofit2.http.Path;
 public interface MuseeAPI {
 
     @GET("musees/{id}")
-    Call<Musee> getMusees(@Path("ID_ext") String id);
+    Call<Musee> getMusees(@Path("id") String id);
 }
