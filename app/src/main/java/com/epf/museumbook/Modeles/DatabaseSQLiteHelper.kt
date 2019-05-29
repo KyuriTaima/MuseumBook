@@ -82,26 +82,34 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
     }
 
     fun insertMusee(musee: Musee) {
-        var ferme = 1
-        if (musee.isFerme) {
-            ferme = 0
-        }
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.put(MUSEUM_COL1, musee.rank)
-        contentValues.put(MUSEUM_COL2, musee.adresse)
-        contentValues.put(MUSEUM_COL3, musee.cp)
-        contentValues.put(MUSEUM_COL4, musee.dept)
-        contentValues.put(MUSEUM_COL5, ferme)
-        contentValues.put(MUSEUM_COL6, musee.fermetureAnnuelle)
-        contentValues.put(MUSEUM_COL7, musee.id)
-        contentValues.put(MUSEUM_COL8, musee.nom)
-        contentValues.put(MUSEUM_COL9, musee.periodeOuverture)
-        contentValues.put(MUSEUM_COL10, musee.region)
-        contentValues.put(MUSEUM_COL11, musee.siteWeb)
-        contentValues.put(MUSEUM_COL12, musee.ville)
+        //check if the museum already exists, if it does, call update
+        val db1 = this.readableDatabase
+        var args = arrayOf(musee.id);
+        val c1 = db1.rawQuery("SELECT * FROM $MUSEUM_TABLE WHERE `id` IS ?", args)
+        if(c1.count == 1){
+            updateMusee(musee)
+        }else {
+            var ferme = 1
+            if (musee.isFerme) {
+                ferme = 0
+            }
+            val db = this.writableDatabase
+            val contentValues = ContentValues()
+            contentValues.put(MUSEUM_COL1, musee.rank)
+            contentValues.put(MUSEUM_COL2, musee.adresse)
+            contentValues.put(MUSEUM_COL3, musee.cp)
+            contentValues.put(MUSEUM_COL4, musee.dept)
+            contentValues.put(MUSEUM_COL5, ferme)
+            contentValues.put(MUSEUM_COL6, musee.fermetureAnnuelle)
+            contentValues.put(MUSEUM_COL7, musee.id)
+            contentValues.put(MUSEUM_COL8, musee.nom)
+            contentValues.put(MUSEUM_COL9, musee.periodeOuverture)
+            contentValues.put(MUSEUM_COL10, musee.region)
+            contentValues.put(MUSEUM_COL11, musee.siteWeb)
+            contentValues.put(MUSEUM_COL12, musee.ville)
 
-        db.insert(MUSEUM_TABLE, null, contentValues)
+            db.insert(MUSEUM_TABLE, null, contentValues)
+        }
     }
 
     fun updateMusee(musee: Musee) {

@@ -12,4 +12,7 @@ public interface MuseeAPI {
 
     @GET("musees/{id}")
     Call<Musee> getMusees(@Path("id") String id);
+
+    //@GET("musees/{id}/pictures/{id_pictures}")
+    //Call<Byte> getImage(@Path("id") String id, String image_id);
 }

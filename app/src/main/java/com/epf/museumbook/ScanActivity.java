@@ -74,38 +74,9 @@ public class ScanActivity extends Activity implements ZXingScannerView.ResultHan
 
     @Override
     public void handleResult(Result rawResult) {
-        callAPI(rawResult.getText());
+        Intent intent = new Intent(context, MuseumActivity.class);
+        intent.putExtra("API_MUSEUM_ID", rawResult.getText());
+        startActivity(intent);
     }
 
-    private void callAPI(String id){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://vps449928.ovh.net/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MuseeAPI museeAPI = retrofit.create(MuseeAPI.class);
-        Call<Musee> call = museeAPI.getMusees(id);
-        call.enqueue(new Callback<Musee>() {
-            @Override
-            public void onResponse(Call<Musee> call, Response<Musee> response) {
-                if (!response.isSuccessful()){
-                    System.out.println("Error, reponse :" + response.code());
-                    return;
-                }
-                else{
-                    System.out.println("API SUCCESSFUL onResponse" + response.code());
-                }
-                Musee musee = response.body();
-
-                DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(context);
-                musee.setRank(db.getLastMuseumRank() + 1);
-                db.insertMusee(musee);
-
-            }
-
-            @Override
-            public void onFailure(Call<Musee> call, Throwable t) {
-                System.out.println("API Error onFailure" + t);
-            }
-        });
-    }
 }
