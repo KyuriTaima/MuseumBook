@@ -6,8 +6,12 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.epf.museumbook.Modeles.DatabaseSQLiteHelper;
 import com.epf.museumbook.Modeles.Musee;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,7 +74,27 @@ public class MuseumActivity extends AppCompatActivity {
                     System.out.println("API Error onFailure" + t);
                 }
             });
+
+            Call<ArrayList<String>> imageCall = museeAPI.getImages(getIntent().getStringExtra("API_MUSEUM_ID"));
+            imageCall.enqueue(new Callback<ArrayList<String>>() {
+                @Override
+                public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                    Glide.with(context)
+                            .load(response.body().get(0))
+                            .into(museumImg);
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<String>> call, Throwable t) {
+                    System.out.println("Error on image API call");
+                }
+            });
+
+
         }
+
+
+
 
         afficherMusee();
     }
