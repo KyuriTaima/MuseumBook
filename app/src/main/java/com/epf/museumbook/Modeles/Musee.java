@@ -9,7 +9,7 @@ public class Musee {
 
     private int rank;
 
-    private ArrayList<String> imagesUrl;
+    private ArrayList<String> imagesUrl = new ArrayList<>();
 
     @SerializedName("adresse")
     @Expose

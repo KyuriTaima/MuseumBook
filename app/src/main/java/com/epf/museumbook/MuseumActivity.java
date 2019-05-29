@@ -27,6 +27,7 @@ public class MuseumActivity extends AppCompatActivity {
     private TextView address;
     private TextView fermetureAnn;
     private ImageView museumImg;
+    private ArrayList<String> imagesUrl;
 
 
     @Override
@@ -66,6 +67,30 @@ public class MuseumActivity extends AppCompatActivity {
                     fermetureAnn.setText(musee.getFermetureAnnuelle());
                     museumImg.setImageResource(R.drawable.ic_musee_du_quai_branly);
 
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("http://vps449928.ovh.net/api/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    MuseeAPI museeAPI = retrofit.create(MuseeAPI.class);
+
+                    Call<ArrayList<String>> imageCall = museeAPI.getImages(getIntent().getStringExtra("API_MUSEUM_ID"));
+                    imageCall.enqueue(new Callback<ArrayList<String>>() {
+                        @Override
+                        public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                            Glide.with(context)
+                                    .load(response.body().get(0))
+                                    .into(museumImg);
+                            DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(context);
+                            imagesUrl = response.body();
+                            setMusee();
+                        }
+
+                        @Override
+                        public void onFailure(Call<ArrayList<String>> call, Throwable t) {
+                            System.out.println("Error on image API call");
+                        }
+                    });
+
 
                 }
 
@@ -75,23 +100,8 @@ public class MuseumActivity extends AppCompatActivity {
                 }
             });
 
-            Call<ArrayList<String>> imageCall = museeAPI.getImages(getIntent().getStringExtra("API_MUSEUM_ID"));
-            imageCall.enqueue(new Callback<ArrayList<String>>() {
-                @Override
-                public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                    Glide.with(context)
-                            .load(response.body().get(0))
-                            .into(museumImg);
-                    DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(context);
-                    musee.setImagesUrl(response.body());
-                    db.insertMusee(musee);
-                }
 
-                @Override
-                public void onFailure(Call<ArrayList<String>> call, Throwable t) {
-                    System.out.println("Error on image API call");
-                }
-            });
+
 
 
         }
@@ -99,10 +109,11 @@ public class MuseumActivity extends AppCompatActivity {
 
 
 
-        afficherMusee();
     }
 
-    private void afficherMusee() {
-
+    private void setMusee() {
+        musee.setImagesUrl(imagesUrl);
+        DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(context);
+        db.insertMusee(musee);
     }
 }
