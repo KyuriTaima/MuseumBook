@@ -25,10 +25,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> mDescriptions = new ArrayList<>();
     private ArrayList<String> mAddresses = new ArrayList<>();
     //private ArrayList<String> mImages = new ArrayList<>();
-    private ArrayList<Integer> mRessources = new ArrayList<>();
+    private ArrayList<String> mRessources = new ArrayList<>();
     private Context mcontext;
 
-    public RecyclerViewAdapter(ArrayList<String> mTitles, ArrayList<String> mDescriptions, ArrayList<String> mAddresses, Context mcontext, ArrayList<Integer> mRessources) {
+    public RecyclerViewAdapter(ArrayList<String> mTitles, ArrayList<String> mDescriptions, ArrayList<String> mAddresses, Context mcontext, ArrayList<String> mRessources) {
         this.mTitles = mTitles;
         this.mDescriptions = mDescriptions;
         this.mAddresses = mAddresses;
@@ -50,7 +50,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          //Bind the images
 
         //Glide.with(mcontext).asBitmap().load(mImages.get(i)).into(viewHolder.image);
-        viewHolder.image.setImageResource(mRessources.get(i));
+        Glide.with(mcontext)
+                .load(mRessources.get(0))
+                .into(viewHolder.image);
         viewHolder.title.setText(mTitles.get(i));
         viewHolder.description.setText(mDescriptions.get(i));
         viewHolder.address.setText(mAddresses.get(i));

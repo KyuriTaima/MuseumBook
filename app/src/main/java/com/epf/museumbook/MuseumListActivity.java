@@ -15,7 +15,7 @@ public class MuseumListActivity extends AppCompatActivity {
     private ArrayList<String> titles = new ArrayList<String>();
     private ArrayList<String> descriptions = new ArrayList<String>();
     private ArrayList<String> addresses = new ArrayList<String>();
-    private ArrayList<Integer> ressources = new ArrayList<Integer>();
+    private ArrayList<String> ressources = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class MuseumListActivity extends AppCompatActivity {
             titles.add(musees.get(i).getNom());
             descriptions.add(musees.get(i).getSiteWeb());
             addresses.add(musees.get(i).getAdresse());
-            ressources.add(R.drawable.ic_musee_du_quai_branly);
+            ressources.add(musees.get(i).getImagesUrl().get(0));
         }
         initRecyclerView();
     }

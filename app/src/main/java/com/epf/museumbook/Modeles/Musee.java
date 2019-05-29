@@ -3,9 +3,13 @@ package com.epf.museumbook.Modeles;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 public class Musee {
 
     private int rank;
+
+    private ArrayList<String> imagesUrl;
 
     @SerializedName("adresse")
     @Expose
@@ -76,6 +80,18 @@ public class Musee {
         this.region = region;
         this.siteWeb = siteWeb;
         this.ville = ville;
+    }
+
+    public ArrayList<String> getImagesUrl() {
+        return imagesUrl;
+    }
+
+    public void addImageUrl(String url) {
+        imagesUrl.add(url);
+    }
+
+    public void setImagesUrl(ArrayList<String> imagesUrl) {
+        this.imagesUrl = imagesUrl;
     }
 
     public String getAdresse() {

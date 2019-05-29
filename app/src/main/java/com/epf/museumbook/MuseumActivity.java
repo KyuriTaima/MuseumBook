@@ -82,6 +82,9 @@ public class MuseumActivity extends AppCompatActivity {
                     Glide.with(context)
                             .load(response.body().get(0))
                             .into(museumImg);
+                    DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(context);
+                    musee.setImagesUrl(response.body());
+                    db.insertMusee(musee);
                 }
 
                 @Override

@@ -10,7 +10,7 @@ import java.util.ArrayList
 class DatabaseSQLiteHelper : SQLiteOpenHelper {
 
     //Set all the database column names and table names into constants
-    val MUSEUM_TABLE = "MUSEUM_TABLE"
+    private val MUSEUM_TABLE = "MUSEUM_TABLE"
     private val MUSEUM_COL1 = "rank"
     private val MUSEUM_COL2 = "Adresse"
     private val MUSEUM_COL3 = "CP"
@@ -24,11 +24,19 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
     private val MUSEUM_COL11 = "SiteWeb"
     private val MUSEUM_COL12 = "Ville"
 
+    private val IMAGE_TABLE = "IMAGE_TABLE"
+    private val IMAGE_COL1 = "id"
+    private val IMAGE_COL2 = "url"
+
+    private val IMAGE_MUSEUM_TABLE = "IMAGE_MUSEUM_TABLE"
+    private val IMAGE_MUSEUM_COL1 = "image_id"
+    private val IMAGE_MUSEUM_COL2 = "museum_id"
+
 
     //This constructor is very useful, if you change anything in the database architecture, column name, table name, add a new table
     // Or just want to empty all the data but keep the architecture, just increment the version number by one
     // It is the last parameter passed in as an Integer in the constructor
-    constructor(context: Context) : super(context, "general_db", null, 4) {
+    constructor(context: Context) : super(context, "general_db", null, 5) {
         val db: SQLiteDatabase = this.writableDatabase
     }
 
@@ -36,13 +44,17 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
     //Set all tables and all column names, if you want to change the name of a table or a column, change the constant value
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("CREATE TABLE $MUSEUM_TABLE ( $MUSEUM_COL1 INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,  $MUSEUM_COL2 TEXT, $MUSEUM_COL3 TEXT, $MUSEUM_COL4 TEXT, $MUSEUM_COL5 INTEGER, $MUSEUM_COL6 TEXT, $MUSEUM_COL7 TEXT, $MUSEUM_COL8 TEXT, $MUSEUM_COL9 TEXT, $MUSEUM_COL10 TEXT, $MUSEUM_COL11 TEXT, $MUSEUM_COL12 )")
-  }
+        db.execSQL("CREATE TABLE $IMAGE_TABLE ($IMAGE_COL1 INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, $IMAGE_COL2 TEXT)")
+        db.execSQL("CREATE TABLE $IMAGE_MUSEUM_TABLE ($IMAGE_MUSEUM_COL1 INTEGER, $IMAGE_MUSEUM_COL2 INTEGER)")
+    }
 
     //onUpgrade method will be called when you increment the version number of the constructor
     //Drops all tables on upgrade to reset them
     //Calls onCreate at the end to reinitialize the database
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db!!.execSQL("DROP TABLE IF EXISTS $MUSEUM_TABLE")
+        db.execSQL("DROP TABLE IF EXIST $IMAGE_MUSEUM_TABLE")
+        db.execSQL("DROP TABLE IF EXISTS $IMAGE_TABLE")
         onCreate(db)
     }
 
@@ -64,6 +76,59 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
             i++
         }
         return musees
+    }
+
+    fun getImages(musee: Musee):ArrayList<String>{
+        val db = this.readableDatabase
+        var idList:ArrayList<String> = arrayListOf()
+        var  urlList:ArrayList<String> = arrayListOf()
+        var args = arrayOf(musee.rank.toString())
+        val c = db.rawQuery("SELECT * FROM $IMAGE_MUSEUM_TABLE WHERE `museum_id` IS ?", args)
+        if(c.count != 0){
+            c.moveToFirst()
+            while (!c.isAfterLast) {
+                idList.add(c.getInt(1).toString())
+                c.moveToNext()
+            }
+            var i =0
+            while (i<idList.size) {
+                var args1:Array<String> = arrayOf(idList.get(i))
+                val c1 = db.rawQuery("SELECT * FROM $IMAGE_TABLE WHERE `id` IS ?", args1)
+                urlList.add(c1.getString(1))
+                i++
+            }
+        }
+
+        return urlList
+
+    }
+    
+    fun insertImages(urlList:ArrayList<String>, musee:Musee){
+        val db = this.writableDatabase
+        var i = 0
+        while(i<urlList.size) {
+            val contentValues = ContentValues()
+            contentValues.put(IMAGE_COL2, urlList.get(i))
+            db.insert(IMAGE_TABLE, null, contentValues)
+            
+            val contentValues2 = ContentValues()
+            contentValues2.put(IMAGE_MUSEUM_COL1,getLastImageId())
+            contentValues2.put(IMAGE_MUSEUM_COL2, musee.rank)
+            db.insert(IMAGE_MUSEUM_TABLE, null, contentValues2)
+            i++
+        }
+
+    }
+
+    private fun getLastImageId(): Int {
+        val db = this.readableDatabase
+        val c = db.rawQuery("SELECT * FROM $IMAGE_TABLE ORDER BY `id` DESC, null", null)
+        c.moveToFirst()
+        return try {
+            c.getInt(0)
+        }catch (e:Exception){
+            1
+        }
     }
 
     fun getMusee(id: String): Musee {
@@ -109,6 +174,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
             contentValues.put(MUSEUM_COL12, musee.ville)
 
             db.insert(MUSEUM_TABLE, null, contentValues)
+            insertImages(musee.imagesUrl, musee)
         }
     }
 
