@@ -35,6 +35,8 @@ public class ScanActivity extends Activity implements ZXingScannerView.ResultHan
                 Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Please let us access your camera...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
             }
 
 

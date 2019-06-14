@@ -1,8 +1,11 @@
 package com.epf.museumbook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +30,7 @@ public class MuseumActivity extends AppCompatActivity {
     private TextView address;
     private TextView fermetureAnn;
     private ImageView museumImg;
+    private Button addImageBtn;
     private ArrayList<String> imagesUrl;
 
 
@@ -40,6 +44,17 @@ public class MuseumActivity extends AppCompatActivity {
         address = findViewById(R.id.museum_address);
         fermetureAnn = findViewById(R.id.museum_femeture_annuelle);
         museumImg = findViewById(R.id.museum_image);
+        addImageBtn = findViewById(R.id.add_picture_button);
+
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PictureActivity.class);
+
+            }
+        });
+
+
 
         if(!getIntent().getStringExtra("API_MUSEUM_ID").isEmpty()) {
             Retrofit retrofit = new Retrofit.Builder()
