@@ -115,6 +115,7 @@ public class MuseumActivity extends AppCompatActivity {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+        try {
             DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
             musee = db.getMusee(getIntent().getIntExtra("MUSEUM_ID", -8));
 
@@ -127,6 +128,9 @@ public class MuseumActivity extends AppCompatActivity {
                     .load(imagesUrl.get(0))
                     .into(museumImg);
             setMusee();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
 
 
 

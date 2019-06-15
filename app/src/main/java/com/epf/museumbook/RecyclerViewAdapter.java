@@ -60,7 +60,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mcontext, "Someone clicked on number " + i, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(mcontext, MuseumActivity.class);
                 intent.putExtra("MUSEUM_ID", i);
                 mcontext.startActivity(intent);
