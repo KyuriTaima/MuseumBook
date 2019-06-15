@@ -9,6 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.epf.museumbook.Modeles.DatabaseSQLiteHelper;
+import com.epf.museumbook.Modeles.Musee;
 
 public class HomeActivity extends AppCompatActivity {
     private Context context = this;
@@ -37,8 +41,14 @@ public class HomeActivity extends AppCompatActivity {
         museumBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MuseumListActivity.class);
-                startActivity(intent);
+                try{
+                    DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(context);
+                    Musee musee = db.getMusees().get(0);
+                    Intent intent = new Intent(context, MuseumListActivity.class);
+                    startActivity(intent);
+                }catch (Exception e){
+                    Toast.makeText(context, "The Museum List is still empty, try scanning a museum !", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -63,8 +73,14 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         }
         if( id == R.id.museum_nav_icon){
-            Intent intent = new Intent(this, MuseumListActivity.class);
-            startActivity(intent);
+            try{
+                DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
+                Musee musee = db.getMusees().get(0);
+                Intent intent = new Intent(this, MuseumListActivity.class);
+                startActivity(intent);
+            }catch (Exception e){
+                Toast.makeText(this, "The Museum List is still empty, try scanning a museum !", Toast.LENGTH_LONG).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);

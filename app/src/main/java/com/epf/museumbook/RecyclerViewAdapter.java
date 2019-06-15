@@ -1,6 +1,7 @@
 package com.epf.museumbook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.epf.museumbook.Modeles.DatabaseSQLiteHelper;
 
 import org.w3c.dom.Text;
 
@@ -25,10 +27,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> mDescriptions = new ArrayList<>();
     private ArrayList<String> mAddresses = new ArrayList<>();
     //private ArrayList<String> mImages = new ArrayList<>();
-    private ArrayList<Integer> mRessources = new ArrayList<>();
+    private ArrayList<String> mRessources = new ArrayList<>();
     private Context mcontext;
 
-    public RecyclerViewAdapter(ArrayList<String> mTitles, ArrayList<String> mDescriptions, ArrayList<String> mAddresses, Context mcontext, ArrayList<Integer> mRessources) {
+    public RecyclerViewAdapter(ArrayList<String> mTitles, ArrayList<String> mDescriptions, ArrayList<String> mAddresses, Context mcontext, ArrayList<String> mRessources) {
         this.mTitles = mTitles;
         this.mDescriptions = mDescriptions;
         this.mAddresses = mAddresses;
@@ -50,14 +52,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          //Bind the images
 
         //Glide.with(mcontext).asBitmap().load(mImages.get(i)).into(viewHolder.image);
-        viewHolder.image.setImageResource(mRessources.get(i));
+        try {
+            Glide.with(mcontext)
+                    .load(mRessources.get(i-1))
+                    .into(viewHolder.image);
+        }catch (Exception e){
+            System.out.println(e.getMessage() + "Recycler View Holder onBindViewHolder");
+            Glide.with(mcontext)
+                    .load("https://www.flaticon.com/free-icon/museum_236981")
+                    .into(viewHolder.image);
+        }
         viewHolder.title.setText(mTitles.get(i));
         viewHolder.description.setText(mDescriptions.get(i));
         viewHolder.address.setText(mAddresses.get(i));
+
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mcontext, "Someone clicked on cumber " + i, Toast.LENGTH_LONG).show();
+                DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(mcontext);
+                Intent intent = new Intent(mcontext, MuseumActivity.class);
+                intent.putExtra("MUSEUM_ID", db.getLastMuseumRank()-i);
+                mcontext.startActivity(intent);
             }
         });
 

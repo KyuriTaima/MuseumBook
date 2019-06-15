@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.epf.museumbook.Modeles.DatabaseSQLiteHelper;
+import com.epf.museumbook.Modeles.Musee;
+
 import java.util.ArrayList;
 
 public class MuseumListActivity extends AppCompatActivity {
@@ -12,33 +15,31 @@ public class MuseumListActivity extends AppCompatActivity {
     private ArrayList<String> titles = new ArrayList<String>();
     private ArrayList<String> descriptions = new ArrayList<String>();
     private ArrayList<String> addresses = new ArrayList<String>();
-    private ArrayList<Integer> ressources = new ArrayList<Integer>();
+    private ArrayList<String> ressources = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_museum_list);
 
-        titles.add("Musée Rodin");
-        titles.add("Musée du Louvre");
-        titles.add("Musée du Quai Branly");
+        DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
+        ArrayList<Musee> musees = new ArrayList<>();
+        musees = db.getMusees();
 
-        descriptions.add("Musée de sculptures");
-        descriptions.add("Musée d'art et d'histoire");
-        descriptions.add("Musée d'art contemporain");
-
-        addresses.add("Jardin du Luxembourg");
-        addresses.add("Explanade du Louvre");
-        addresses.add("Quai Branly");
-
-        ressources.add(R.drawable.ic_musee_rodin);
-        ressources.add(R.drawable.ic_musee_du_louvre);
-        ressources.add(R.drawable.ic_musee_du_quai_branly);
-
+        for(int i=0;i<musees.size();i++){
+            titles.add(musees.get(i).getNom());
+            descriptions.add(musees.get(i).getSiteWeb());
+            addresses.add(musees.get(i).getAdresse());
+            try {
+                ressources.add(musees.get(i).getImagesUrl().get(0));
+            }catch(Exception e){
+                System.out.println(e.getMessage() + "///no picture found");
+            }
+        }
         initRecyclerView();
-
-
-
     }
+
+
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.museums_recycler_view);

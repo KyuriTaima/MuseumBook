@@ -8,7 +8,8 @@
     android:weightSum="100"
     android:elevation="5dp"
     android:background="@color/projectLightGrey"
-    android:id="@+id/layout_recycler_view">
+    android:id="@+id/layout_recycler_view"
+    android:layout_margin="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/icon_recycler_view"
