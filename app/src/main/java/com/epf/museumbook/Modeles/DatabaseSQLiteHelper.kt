@@ -33,7 +33,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
     //This constructor is very useful, if you change anything in the database architecture, column name, table name, add a new table
     // Or just want to empty all the data but keep the architecture, just increment the version number by one
     // It is the last parameter passed in as an Integer in the constructor
-    constructor(context: Context) : super(context, "general_db", null, 6) {
+    constructor(context: Context) : super(context, "general_db", null, 9) {
         val db: SQLiteDatabase = this.writableDatabase
     }
 
@@ -67,9 +67,10 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
             musees.add(Musee(c.getInt(0),c.getString(1), c.getString(2), c.getString(3), ferme, c.getString(5),
                     c.getString(6), c.getString(7), c.getString(8), c.getString(9), c.getString(10),
                     c.getString(11)))
-            val c1 = db.rawQuery("SELECT * FROM $IMAGE_TABLE WHERE `museum_id` IS ${musees.get(musees.size-1).rank}", null)
+            val c1 = db.rawQuery("SELECT * FROM $IMAGE_TABLE WHERE `museum_id` IS '${musees.get(musees.size-1).rank}'", null)
             c1.moveToFirst()
             while(!c1.isAfterLast){
+                //get the last museum in the musees list
                 musees.get(musees.size-1).addImageUrl(c1.getString(1))
                 c1.moveToNext()
             }
@@ -93,13 +94,13 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
 
     }
     
-    fun insertImages(urlList:ArrayList<String>, musee:Musee){
+    fun insertImages(urlList:ArrayList<String>, rank:Int){
         val db = this.writableDatabase
         var i = 0
         while(i<urlList.size) {
             val contentValues = ContentValues()
             contentValues.put(IMAGE_COL2, urlList.get(i))
-            contentValues.put(IMAGE_COL3, musee.rank)
+            contentValues.put(IMAGE_COL3, rank)
             db.insert(IMAGE_TABLE, null, contentValues)
             i++
         }
@@ -161,7 +162,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
 
             db.insert(MUSEUM_TABLE, null, contentValues)
             if(musee.imagesUrl != null) {
-                insertImages(musee.imagesUrl, musee)
+                insertImages(musee.imagesUrl, getLastMuseumRank())
             }
         }
     }
@@ -190,7 +191,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         val args = arrayOf(musee.id)
         db.update(MUSEUM_TABLE, contentValues, "`id` = ?", args)
         if(musee.imagesUrl != null) {
-            insertImages(musee.imagesUrl, musee)
+            insertImages(musee.imagesUrl, musee.rank)
         }
     }
 

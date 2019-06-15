@@ -79,7 +79,6 @@ public class MuseumActivity extends AppCompatActivity {
                     title.setText(musee.getNom());
                     address.setText(musee.getAdresse());
                     fermetureAnn.setText(musee.getFermetureAnnuelle());
-                    museumImg.setImageResource(R.drawable.ic_musee_du_quai_branly);
 
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://vps449928.ovh.net/api/")
@@ -91,10 +90,10 @@ public class MuseumActivity extends AppCompatActivity {
                     imageCall.enqueue(new Callback<ArrayList<String>>() {
                         @Override
                         public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                            Glide.with(context)
-                                    .load(response.body().get(0))
-                                    .into(museumImg);
                             imagesUrl = response.body();
+                            Glide.with(context)
+                                    .load(imagesUrl.get(0))
+                                    .into(museumImg);
                             setMusee();
                         }
 

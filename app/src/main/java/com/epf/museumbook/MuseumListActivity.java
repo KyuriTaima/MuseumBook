@@ -25,13 +25,16 @@ public class MuseumListActivity extends AppCompatActivity {
         DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
         ArrayList<Musee> musees = new ArrayList<>();
         musees = db.getMusees();
-        System.out.println(musees.get(0).getAdresse());
 
         for(int i=0;i<musees.size();i++){
             titles.add(musees.get(i).getNom());
             descriptions.add(musees.get(i).getSiteWeb());
             addresses.add(musees.get(i).getAdresse());
-            ressources.add(musees.get(i).getImagesUrl().get(0));
+            try {
+                ressources.add(musees.get(i).getImagesUrl().get(0));
+            }catch(Exception e){
+                System.out.println(e.getMessage() + "///no picture found");
+            }
         }
         initRecyclerView();
     }

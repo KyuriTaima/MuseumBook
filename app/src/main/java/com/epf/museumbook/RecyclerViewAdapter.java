@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.epf.museumbook.Modeles.DatabaseSQLiteHelper;
 
 import org.w3c.dom.Text;
 
@@ -52,16 +53,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         //Glide.with(mcontext).asBitmap().load(mImages.get(i)).into(viewHolder.image);
         Glide.with(mcontext)
-                .load(mRessources.get(0))
+                .load(mRessources.get(i))
                 .into(viewHolder.image);
         viewHolder.title.setText(mTitles.get(i));
         viewHolder.description.setText(mDescriptions.get(i));
         viewHolder.address.setText(mAddresses.get(i));
+
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(mcontext);
                 Intent intent = new Intent(mcontext, MuseumActivity.class);
-                intent.putExtra("MUSEUM_ID", i);
+                intent.putExtra("MUSEUM_ID", db.getLastMuseumRank()-i);
                 mcontext.startActivity(intent);
             }
         });

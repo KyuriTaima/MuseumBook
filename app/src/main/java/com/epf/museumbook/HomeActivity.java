@@ -44,10 +44,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-//        DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
-//        Musee musee = new Musee(db.getLastMuseumRank() + 1,"Puteaux","92330","Hauts-de-Seines", true, "Janvier", "1235484egdg54", "Louvre", "8h-12h", "Alsace", "www.louvre.com", "Angers");
-//        db.insertMusee(musee);
     }
 
     @Override
