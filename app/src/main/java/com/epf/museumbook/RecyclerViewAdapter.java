@@ -26,7 +26,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> mTitles = new ArrayList<>();
     private ArrayList<String> mDescriptions = new ArrayList<>();
     private ArrayList<String> mAddresses = new ArrayList<>();
-    //private ArrayList<String> mImages = new ArrayList<>();
     private ArrayList<String> mRessources = new ArrayList<>();
     private Context mcontext;
 
@@ -34,7 +33,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mTitles = mTitles;
         this.mDescriptions = mDescriptions;
         this.mAddresses = mAddresses;
-        //this.mImages = mImages;
         this.mRessources = mRessources;
         this.mcontext = mcontext;
     }
@@ -54,7 +52,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     .load(mRessources.get(i-1))
                     .into(viewHolder.image);
         }catch (Exception e){
-            System.out.println(e.getMessage() + "Recycler View Holder onBindViewHolder");
             Glide.with(mcontext)
                     .load("https://www.flaticon.com/free-icon/museum_236981")
                     .into(viewHolder.image);

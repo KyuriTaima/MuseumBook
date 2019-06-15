@@ -25,7 +25,7 @@
         <activity android:name=".MuseumListActivity" />
         <activity android:name=".MuseumActivity" />
         <activity android:name=".ScanActivity" />
-        <activity android:name=".PictureActivity"></activity>
+        <activity android:name=".PictureActivity"/>
     </application>
 
 </manifest>

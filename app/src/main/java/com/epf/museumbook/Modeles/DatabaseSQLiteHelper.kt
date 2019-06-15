@@ -106,18 +106,6 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         }
 
     }
-
-    private fun getLastImageId(): Int {
-        val db = this.readableDatabase
-        val c = db.rawQuery("SELECT * FROM $IMAGE_TABLE ORDER BY `id` DESC, null", null)
-        c.moveToFirst()
-        return try {
-            c.getInt(0)
-        }catch (e:Exception){
-            1
-        }
-    }
-
     fun getMusee(rank: Int): Musee {
         val db = this.readableDatabase
         //Get the job corresponding to the job_id passed as a parameter
@@ -192,12 +180,6 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         if(musee.imagesUrl != null) {
             insertImages(musee.imagesUrl, musee.rank)
         }
-    }
-
-    fun deleteMusee(musee: Musee) {
-        val db = this.writableDatabase
-        val args = arrayOf(musee.id)
-        db.delete(MUSEUM_TABLE, "`id` = ?", args)
     }
 
     fun getLastMuseumRank():Int {
