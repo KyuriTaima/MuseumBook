@@ -6,4 +6,6 @@
     <string name="mus_e_rodin">Musée Rodin</string>
     <string name="_14_quai_de_la_r_p_e">14 Quai de la Râpée</string>
     <string name="take_a_picture">Take a picture</string>
+    <string name="new_picture">New Picture</string>
+    <string name="send_picture">Send Picture</string>
 </resources>

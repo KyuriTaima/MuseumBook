@@ -50,6 +50,8 @@ public class MuseumActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PictureActivity.class);
+                intent.putExtra("MUSEUM_ID", musee.getRank());
+                startActivity(intent);
 
             }
         });

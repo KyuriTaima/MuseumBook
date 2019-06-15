@@ -49,9 +49,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder,final int i) {
-         //Bind the images
-
-        //Glide.with(mcontext).asBitmap().load(mImages.get(i)).into(viewHolder.image);
         try {
             Glide.with(mcontext)
                     .load(mRessources.get(i-1))
