@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PictureActivity">
+    android:weightSum="100"
+    android:orientation="vertical"
+    tools:context=".PictureActivity"
+    android:gravity="center_horizontal">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/post_image"
+        android:layout_weight="60"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/new_picture_button"
+        android:layout_margin="20dp"
+        android:layout_weight="20"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/new_picture"
+        android:textSize="25sp"
+        android:textColor="@color/projectRed"
+        android:background="@color/projectLightGrey"/>
+
+</LinearLayout>

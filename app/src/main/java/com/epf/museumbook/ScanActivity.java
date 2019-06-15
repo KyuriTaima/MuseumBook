@@ -30,6 +30,7 @@ public class ScanActivity extends Activity implements ZXingScannerView.ResultHan
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
+        //Test if the app has the permission needed and ask for it if it doesn't have it
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show();

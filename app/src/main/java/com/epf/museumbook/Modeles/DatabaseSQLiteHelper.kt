@@ -7,6 +7,13 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.util.ArrayList
 
+/*
+ * This database saves all the Museum information, including the pictures related to it
+ * The primary key of the museum table is the rank and not the ID because we could confuse it with the ID
+ * sent by the API
+ * The pictures are not actually stored in the database, only the URL of the pictures
+ */
+
 class DatabaseSQLiteHelper : SQLiteOpenHelper {
 
     //Set all the database column names and table names into constants
@@ -53,20 +60,30 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         onCreate(db)
     }
 
+    /*
+     * This function returns an ArrayList of type Musee containing all the musee in the database
+     */
     fun getMusees(): ArrayList<Musee> {
-        val musees: ArrayList<Musee> = ArrayList()
-        val db = this.readableDatabase
-        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `rank` DESC, null", null)
-        c.moveToFirst()
+        val musees: ArrayList<Musee> = ArrayList()  //create an ArrayList of Musee
+        val db = this.readableDatabase  //Create an instance of the database
+        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `rank` DESC, null", null) //get all the musee ordered by rank desc
+        c.moveToFirst() //Set cursor to the first line
         var i = 0
-        while (i < c.count) {
+        while (i < c.count) {   //check if the cursor is finished
+
+            //This code transforms the int parameter "ferme" into a boolean for the Musee object
+            //1 -> true
+            //0 -> false
             var ferme = true
             if (c.getInt(4) == 0) {
                 ferme = false
             }
+            //Build a Musee object with the data from the cursor and add it to the museum list
             musees.add(Musee(c.getInt(0),c.getString(1), c.getString(2), c.getString(3), ferme, c.getString(5),
                     c.getString(6), c.getString(7), c.getString(8), c.getString(9), c.getString(10),
                     c.getString(11)))
+
+            //Get all the images from the museum
             val c1 = db.rawQuery("SELECT * FROM $IMAGE_TABLE WHERE `museum_id` IS '${musees.get(musees.size-1).rank}'", null)
             c1.moveToFirst()
             while(!c1.isAfterLast){
@@ -77,9 +94,11 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
             c.moveToNext()
             i++
         }
+        //return the museum list
         return musees
     }
 
+    //Returns all the images url of a museum
     fun getImages(musee: Musee):ArrayList<String>{
         val db = this.readableDatabase
         var  urlList:ArrayList<String> = arrayListOf()
@@ -93,7 +112,8 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         return urlList
 
     }
-    
+
+    //Inserts images into a museum
     fun insertImages(urlList:ArrayList<String>, rank:Int){
         val db = this.writableDatabase
         var i = 0
@@ -107,17 +127,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
 
     }
 
-    private fun getLastImageId(): Int {
-        val db = this.readableDatabase
-        val c = db.rawQuery("SELECT * FROM $IMAGE_TABLE ORDER BY `id` DESC, null", null)
-        c.moveToFirst()
-        return try {
-            c.getInt(0)
-        }catch (e:Exception){
-            1
-        }
-    }
-
+    //Returns a museum based on the rank
     fun getMusee(rank: Int): Musee {
         val db = this.readableDatabase
         //Get the job corresponding to the job_id passed as a parameter
@@ -133,6 +143,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
 
     }
 
+    //Inserts a museum into the database
     fun insertMusee(musee: Musee) {
         //check if the museum already exists, if it does, call update
         val db1 = this.readableDatabase
@@ -167,6 +178,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         }
     }
 
+    //updates a museum
     fun updateMusee(musee: Musee) {
 
         var ferme = 1
@@ -194,12 +206,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         }
     }
 
-    fun deleteMusee(musee: Musee) {
-        val db = this.writableDatabase
-        val args = arrayOf(musee.id)
-        db.delete(MUSEUM_TABLE, "`id` = ?", args)
-    }
-
+    //gives the last rank of the museum table
     fun getLastMuseumRank():Int {
         val db = this.readableDatabase
         val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `rank` DESC, null", null)

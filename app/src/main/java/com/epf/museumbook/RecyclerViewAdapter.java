@@ -21,12 +21,16 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/*
+ * This adpater will create the Recycler View of the list of the museums
+ */
+
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<String> mTitles = new ArrayList<>();
     private ArrayList<String> mDescriptions = new ArrayList<>();
     private ArrayList<String> mAddresses = new ArrayList<>();
-    //private ArrayList<String> mImages = new ArrayList<>();
     private ArrayList<String> mRessources = new ArrayList<>();
     private Context mcontext;
 
@@ -34,7 +38,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mTitles = mTitles;
         this.mDescriptions = mDescriptions;
         this.mAddresses = mAddresses;
-        //this.mImages = mImages;
         this.mRessources = mRessources;
         this.mcontext = mcontext;
     }
@@ -49,15 +52,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder,final int i) {
-         //Bind the images
-
-        //Glide.with(mcontext).asBitmap().load(mImages.get(i)).into(viewHolder.image);
+        //If the museum does not have an image, it will not crash the application
         try {
             Glide.with(mcontext)
                     .load(mRessources.get(i-1))
                     .into(viewHolder.image);
         }catch (Exception e){
-            System.out.println(e.getMessage() + "Recycler View Holder onBindViewHolder");
             Glide.with(mcontext)
                     .load("https://www.flaticon.com/free-icon/museum_236981")
                     .into(viewHolder.image);
@@ -66,6 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.description.setText(mDescriptions.get(i));
         viewHolder.address.setText(mAddresses.get(i));
 
+        //If the user clicks on a museum, it will go forward to the MuseumActivity, passing the museum rank in the intent
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
