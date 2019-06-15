@@ -10,6 +10,10 @@ import com.epf.museumbook.Modeles.Musee;
 
 import java.util.ArrayList;
 
+/*
+ * This activity will display the list of all the museums with their information and a picture
+ */
+
 public class MuseumListActivity extends AppCompatActivity {
 
     private ArrayList<String> titles = new ArrayList<String>();
@@ -24,12 +28,13 @@ public class MuseumListActivity extends AppCompatActivity {
 
         DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
         ArrayList<Musee> musees = new ArrayList<>();
-        musees = db.getMusees();
+        musees = db.getMusees();    //Send a request to get all the stored museums
 
         for(int i=0;i<musees.size();i++){
             titles.add(musees.get(i).getNom());
             descriptions.add(musees.get(i).getSiteWeb());
             addresses.add(musees.get(i).getAdresse());
+            //Will catch an error if the museum does not have any pictures stored
             try {
                 ressources.add(musees.get(i).getImagesUrl().get(0));
             }catch(Exception e){

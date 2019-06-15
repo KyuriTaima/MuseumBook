@@ -37,6 +37,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/*
+ * On this activity, the user can take a picture and it will send it to the API
+ */
+
 public class PictureActivity extends AppCompatActivity {
     private Musee museum;
     private Context context;
@@ -56,6 +60,7 @@ public class PictureActivity extends AppCompatActivity {
         pictureImg = findViewById(R.id.post_image);
         Button newPictureBtn = findViewById(R.id.new_picture_button);
 
+        //If the application does not have access to the camera, it will ask for it
         newPictureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +111,7 @@ public class PictureActivity extends AppCompatActivity {
         }
     }
 
+    //Has a URI in input and returns an actual Path
     private String getRealPathFromURIPath(Uri uri, Context context) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
@@ -227,6 +233,7 @@ public class PictureActivity extends AppCompatActivity {
         return null;
     }
 
+    //Has a Bitmap in input and returns a URI
     private Uri getImageUri(PictureActivity pictureActivity, Bitmap postImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         postImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);

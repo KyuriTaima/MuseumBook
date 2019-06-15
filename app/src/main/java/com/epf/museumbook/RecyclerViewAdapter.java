@@ -21,6 +21,11 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/*
+ * This adpater will create the Recycler View of the list of the museums
+ */
+
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
     private ArrayList<String> mTitles = new ArrayList<>();
@@ -47,6 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder,final int i) {
+        //If the museum does not have an image, it will not crash the application
         try {
             Glide.with(mcontext)
                     .load(mRessources.get(i-1))
@@ -60,6 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.description.setText(mDescriptions.get(i));
         viewHolder.address.setText(mAddresses.get(i));
 
+        //If the user clicks on a museum, it will go forward to the MuseumActivity, passing the museum rank in the intent
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

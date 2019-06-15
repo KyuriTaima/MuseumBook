@@ -4,12 +4,16 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+/*
+ * The Museum class configures all the parameters needed for a Museum object
+ * The annotations link the parameters to the JSON file we get from the API
+ */
 
 public class Musee {
 
-    private int rank;
+    private int rank;   //This is the primary key of the local database so it doesn't need an annotation
 
-    private ArrayList<String> imagesUrl = new ArrayList<>();
+    private ArrayList<String> imagesUrl = new ArrayList<>();    //This list stores all the url from the images of this museum
 
     @SerializedName("adresse")
     @Expose
