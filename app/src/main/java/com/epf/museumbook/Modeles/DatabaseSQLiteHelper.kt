@@ -33,7 +33,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
     //This constructor is very useful, if you change anything in the database architecture, column name, table name, add a new table
     // Or just want to empty all the data but keep the architecture, just increment the version number by one
     // It is the last parameter passed in as an Integer in the constructor
-    constructor(context: Context) : super(context, "general_db", null, 9) {
+    constructor(context: Context) : super(context, "general_db", null, 11) {
         val db: SQLiteDatabase = this.writableDatabase
     }
 
@@ -175,7 +175,6 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         }
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(MUSEUM_COL1, musee.rank)
         contentValues.put(MUSEUM_COL2, musee.adresse)
         contentValues.put(MUSEUM_COL3, musee.cp)
         contentValues.put(MUSEUM_COL4, musee.dept)
