@@ -83,7 +83,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         val db = this.readableDatabase
         var  urlList:ArrayList<String> = arrayListOf()
 
-        val c = db.rawQuery("SELECT * FROM $IMAGE_TABLE WHERE `museum_id` IS `${musee.rank}`",null)
+        val c = db.rawQuery("SELECT * FROM $IMAGE_TABLE WHERE `museum_id` = '${musee.rank}'",null)
         c.moveToFirst()
         while (!c.isAfterLast) {
             urlList.add(c.getString(1))
@@ -117,10 +117,10 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
         }
     }
 
-    fun getMusee(id: String): Musee {
+    fun getMusee(rank: Int): Musee {
         val db = this.readableDatabase
         //Get the job corresponding to the job_id passed as a parameter
-        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE WHERE `id` IS $id", null)
+        val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE WHERE `rank` IS $rank", null)
         c.moveToFirst()
         var ferme = true
         if (c.getInt(4) == 0) {
@@ -146,7 +146,7 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
             }
             val db = this.writableDatabase
             val contentValues = ContentValues()
-            contentValues.put(MUSEUM_COL1, musee.rank)
+            //contentValues.put(MUSEUM_COL1, musee.rank)
             contentValues.put(MUSEUM_COL2, musee.adresse)
             contentValues.put(MUSEUM_COL3, musee.cp)
             contentValues.put(MUSEUM_COL4, musee.dept)
@@ -203,11 +203,12 @@ class DatabaseSQLiteHelper : SQLiteOpenHelper {
     fun getLastMuseumRank():Int {
         val db = this.readableDatabase
         val c = db.rawQuery("SELECT * FROM $MUSEUM_TABLE ORDER BY `rank` DESC, null", null)
-        c.moveToFirst()
-        return try {
-            c.getInt(0)
-        }catch (e:Exception){
-            1
+        if(c.count == 0){
+            return 0
+        }
+        else{
+            c.moveToFirst()
+            return c.getInt(0)
         }
     }
 }

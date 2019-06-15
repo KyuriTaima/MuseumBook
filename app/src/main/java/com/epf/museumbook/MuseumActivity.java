@@ -56,7 +56,8 @@ public class MuseumActivity extends AppCompatActivity {
 
 
 
-        if(!getIntent().getStringExtra("API_MUSEUM_ID").isEmpty()) {
+        try {
+            getIntent().getStringExtra("API_MUSEUM_ID").isEmpty();
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://vps449928.ovh.net/api/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -74,9 +75,7 @@ public class MuseumActivity extends AppCompatActivity {
                     }
                     musee = response.body();
 
-                    DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(context);
-                    musee.setRank(db.getLastMuseumRank() + 1);
-                    db.insertMusee(musee);
+                    //musee.setRank(db.getLastMuseumRank() + 1);
                     title.setText(musee.getNom());
                     address.setText(musee.getAdresse());
                     fermetureAnn.setText(musee.getFermetureAnnuelle());
@@ -95,7 +94,6 @@ public class MuseumActivity extends AppCompatActivity {
                             Glide.with(context)
                                     .load(response.body().get(0))
                                     .into(museumImg);
-                            DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(context);
                             imagesUrl = response.body();
                             setMusee();
                         }
@@ -114,12 +112,22 @@ public class MuseumActivity extends AppCompatActivity {
                     System.out.println("API Error onFailure" + t);
                 }
             });
-
-
-
-
-
+        }catch(Exception e){
+            System.out.println(e.getMessage());
         }
+            DatabaseSQLiteHelper db = new DatabaseSQLiteHelper(this);
+            musee = db.getMusee(getIntent().getIntExtra("MUSEUM_ID", -8));
+
+            title.setText(musee.getNom());
+            address.setText(musee.getAdresse());
+            fermetureAnn.setText(musee.getFermetureAnnuelle());
+            imagesUrl = db.getImages(musee);
+
+            Glide.with(context)
+                    .load(imagesUrl.get(0))
+                    .into(museumImg);
+            setMusee();
+
 
 
 

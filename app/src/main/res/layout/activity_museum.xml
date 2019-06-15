@@ -43,7 +43,7 @@
         android:layout_margin="10dp"
         android:id="@+id/add_picture_button"
         android:text="@string/take_a_picture"
-        android:textColor="@color/projectLightGrey"
+        android:textColor="@color/projectRed"
         android:background="@color/projectLightGrey"
         android:textSize="25sp"/>
 

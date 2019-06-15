@@ -1,6 +1,7 @@
 package com.epf.museumbook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -59,7 +60,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mcontext, "Someone clicked on cumber " + i, Toast.LENGTH_LONG).show();
+                Toast.makeText(mcontext, "Someone clicked on number " + i, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mcontext, MuseumActivity.class);
+                intent.putExtra("MUSEUM_ID", i);
+                mcontext.startActivity(intent);
             }
         });
 
