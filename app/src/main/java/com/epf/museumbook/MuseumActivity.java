@@ -90,16 +90,22 @@ public class MuseumActivity extends AppCompatActivity {
                     imageCall.enqueue(new Callback<ArrayList<String>>() {
                         @Override
                         public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                            imagesUrl = response.body();
-                            Glide.with(context)
-                                    .load(imagesUrl.get(0))
-                                    .into(museumImg);
+                            try {
+                                imagesUrl = response.body();
+                                Glide.with(context)
+                                        .load(imagesUrl.get(0))
+                                        .into(museumImg);
+                            }catch(Exception e){
+                                System.out.println(e.getMessage() + "/// No image found upon API call");
+                                setMusee();
+                            }
                             setMusee();
                         }
 
                         @Override
                         public void onFailure(Call<ArrayList<String>> call, Throwable t) {
                             System.out.println("Error on image API call");
+                            setMusee();
                         }
                     });
 

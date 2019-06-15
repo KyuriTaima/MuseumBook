@@ -52,9 +52,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          //Bind the images
 
         //Glide.with(mcontext).asBitmap().load(mImages.get(i)).into(viewHolder.image);
-        Glide.with(mcontext)
-                .load(mRessources.get(i))
-                .into(viewHolder.image);
+        try {
+            Glide.with(mcontext)
+                    .load(mRessources.get(i-1))
+                    .into(viewHolder.image);
+        }catch (Exception e){
+            System.out.println(e.getMessage() + "Recycler View Holder onBindViewHolder");
+            Glide.with(mcontext)
+                    .load("https://www.flaticon.com/free-icon/museum_236981")
+                    .into(viewHolder.image);
+        }
         viewHolder.title.setText(mTitles.get(i));
         viewHolder.description.setText(mDescriptions.get(i));
         viewHolder.address.setText(mAddresses.get(i));
